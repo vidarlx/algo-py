@@ -1,5 +1,5 @@
 from collections import deque
-import test
+import unittest
 
 def bfs(graph, start, search):
   queue = deque()
@@ -15,10 +15,10 @@ def bfs(graph, start, search):
         return visited 
       else:
         diff = graph[vertice] - visited
-        print "Adding to queue: {}".format(diff)
+        #print "Adding to queue: {}".format(diff)
         queue += diff
         
-    print "Queue: {}".format(queue)
+    #print "Queue: {}".format(queue)
 
 #        A
 #      /  \
@@ -40,4 +40,14 @@ graph = {
   'I': set(['D', 'G'])
 }
 
-print bfs(graph, 'A', 'D')
+class TestSimpleBFS(unittest.TestCase):
+  def test_VerticesSearch(self):
+    self.assertSetEqual(bfs(graph, 'A', 'B'), set(['A', 'B', 'C']))
+    self.assertSetEqual(bfs(graph, 'A', 'D', ), set(['A', 'B', 'C', 'D', 'E', 'F']))
+    self.assertSetEqual(bfs(graph, 'A', 'I', ), set(['A', 'B', 'C', 'D', 'E', 'F' ,'G', 'H', 'I']))
+    self.assertSetEqual(bfs(graph, 'A', 'F', ), set(['A', 'B', 'C', 'F']))
+    self.assertSetEqual(bfs(graph, 'A', 'H', ), set(['A', 'B', 'C', 'D', 'E', 'F', 'H']))
+
+if __name__ == '__main__':
+    suite = unittest.TestLoader().loadTestsFromTestCase(TestSimpleBFS)
+    unittest.TextTestRunner(verbosity=0).run(suite)
